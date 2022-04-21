@@ -19,9 +19,9 @@ public class GetMovieInfo {
 
     public interface ResultListener{
         void nameResult(JsonArray jsonArray);
-        void detailResult();
+        void detailResult(JsonObject jsonObject);
     }
-    public void getMovieNameImage(String name, ResultListener resultListener){
+    public void getMovieName(String name, ResultListener resultListener){
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(baseUrl);
         Retrofit retrofit = retrofitBuilder.client(okHttpBuilder.build())
@@ -33,14 +33,35 @@ public class GetMovieInfo {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()){
-                    Log.d(TAG, "onResponse: QQQQQQQQQQQ " + response.body());
                     resultListener.nameResult(response.body().getAsJsonArray("results"));
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d(TAG, "onFailure: Errrrrrrrrrrrrrror");
+            }
+        });
+    }
+
+    public void getMovieDetail(String movieId, ResultListener resultListener){
+        OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(baseUrl);
+        Retrofit retrofit = retrofitBuilder.client(okHttpBuilder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        IMDB IMDBApi = retrofit.create(IMDB.class);
+        Call<JsonObject> call = IMDBApi.getMovieDetail(movieId);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()){
+                    resultListener.detailResult(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
             }
         });
     }

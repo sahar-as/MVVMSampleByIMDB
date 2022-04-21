@@ -1,13 +1,16 @@
 package ir.saharapps.mvvmsamplebyimdb.model;
 
 public class Movie {
+    private String id;
     private String name;
     private String imgURL;
     private String type;
     private String year;
     private String imdb;
 
-    public Movie(String name, String imgURL) {
+
+    public Movie(String id, String name, String imgURL) {
+        this.id = id;
         this.name = name;
         this.imgURL = imgURL;
     }
@@ -52,10 +55,19 @@ public class Movie {
         this.imdb = imdb;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", imgURL='" + imgURL + '\'' +
                 ", type='" + type + '\'' +
                 ", year='" + year + '\'' +
