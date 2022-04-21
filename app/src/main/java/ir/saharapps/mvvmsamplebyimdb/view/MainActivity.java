@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.progressBarMainActivity.setVisibility(View.GONE);
 
+        //this is for data adapter and recyclerView
         try{
             appViewModel.liveMovieList.observe(this, new Observer<List<Movie>>() {
                 @Override
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate: 333333333333333");
         }
 
+        //This is for show/hide progress bar
         appViewModel.liveProgressBar.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
