@@ -55,6 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
         Log.d(TAG, "onBindViewHolder: 4444444444 " + imageUrl);
         Picasso.get()
                 .load(imageUrl)
+                .resize(100,100)
                 .placeholder(R.drawable.no_image)
                 .into(holder.binding.imgRvMovieItemImage);
 
