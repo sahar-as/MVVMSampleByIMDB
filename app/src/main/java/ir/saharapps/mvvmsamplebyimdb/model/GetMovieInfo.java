@@ -44,6 +44,7 @@ public class GetMovieInfo {
     }
 
     public void getMovieDetail(String movieId, ResultListener resultListener){
+        Log.d(TAG, "getMovieDetail: 777777777777 " + movieId);
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(baseUrl);
         Retrofit retrofit = retrofitBuilder.client(okHttpBuilder.build())
@@ -55,6 +56,7 @@ public class GetMovieInfo {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()){
+                    Log.d(TAG, "onResponse: 6666666666666 " + response.body());
                     resultListener.detailResult(response.body());
                 }
             }
@@ -70,3 +72,7 @@ public class GetMovieInfo {
 
 //https://imdb-api.com/en/API/SearchMovie/k_h652qt5l/inception 2010
 //https://imdb-api.com/en/API/Ratings/k_h652qt5l/tt1375666
+
+//https://imdb-api.com/en/API/Ratings/k_h652qt5l/tt12059644
+//https://imdb-api.com/en/API/Ratings/k_h652qt5l/%22tt1375666%22/
+//https://imdb-api.com/en/API/Ratings/k_h652qt5l/%22tt1375666%22/

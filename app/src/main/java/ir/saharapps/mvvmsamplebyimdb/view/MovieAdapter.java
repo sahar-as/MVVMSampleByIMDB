@@ -16,6 +16,7 @@ import java.util.List;
 import ir.saharapps.mvvmsamplebyimdb.R;
 import ir.saharapps.mvvmsamplebyimdb.databinding.RvMovieItemBinding;
 import ir.saharapps.mvvmsamplebyimdb.model.Movie;
+import ir.saharapps.mvvmsamplebyimdb.viewModel.AppViewModel;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder> {
     private static final String TAG = "MovieAdapter";
@@ -37,10 +38,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
     @Override
     public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
+        int thisPosition = position;
 
-        holder.binding.txtRvMovieItemName.setText(movieList.get(position).getName());
+        holder.binding.txtRvMovieItemName.setText(movieList.get(thisPosition).getName());
 
-        String imageUrl = movieList.get(position).getImgURL();
+        String imageUrl = movieList.get(thisPosition).getImgURL();
         Log.d(TAG, "onBindViewHolder: 4444444444 " + imageUrl);
         Picasso.get()
                 .load(imageUrl)
@@ -51,6 +53,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: 66666666666666");
+                AppViewModel appViewModel = new AppViewModel();
+                appViewModel.getMovieDetail(movieList.get(thisPosition).getId());
             }
         };
 

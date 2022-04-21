@@ -31,10 +31,10 @@ public class AppViewModel extends ViewModel {
                 List<Movie> movieList = new ArrayList<>();
                 for(int i=0; i<jsonArray.size() ; i++){
                     JsonObject oneMovie = (JsonObject) jsonArray.get(i);
-                    List list = Arrays.asList(oneMovie.get("image").toString().split("/"));
+                    List list = Arrays.asList(oneMovie.get("image").getAsString().split("/"));
                     String imageUrl = "https://m.media-amazon.com/images/M/" + list.get(list.size()-1).toString();
-                    Movie movie = new Movie(oneMovie.get("id").toString()
-                            ,oneMovie.get("title").toString(), imageUrl);
+                    Movie movie = new Movie(oneMovie.get("id").getAsString()
+                            ,oneMovie.get("title").getAsString(), imageUrl);
                     movieList.add(movie);
                 }
                 mutableLiveDataMovieList.setValue(movieList);
@@ -50,12 +50,15 @@ public class AppViewModel extends ViewModel {
         mGetMovieInfo.getMovieDetail(movieId, new GetMovieInfo.ResultListener() {
             @Override
             public void nameResult(JsonArray jsonArray) {
-                ////not thing important here
+                //not thing important here
             }
 
             @Override
             public void detailResult(JsonObject jsonObject) {
-
+                String type = jsonObject.get("type").getAsString();
+                String year= jsonObject.get("year").getAsString();
+                String imdb = jsonObject.get("imDb").getAsString();
+                Log.d(TAG, "nameResult: 00000000000 " + type + "/" + year + "/" + imdb);
             }
         });
     }
