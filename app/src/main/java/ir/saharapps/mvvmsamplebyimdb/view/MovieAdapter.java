@@ -1,12 +1,17 @@
 package ir.saharapps.mvvmsamplebyimdb.view;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -22,9 +27,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     private static final String TAG = "MovieAdapter";
 
     private List<Movie>  movieList;
+    Context mContext;
+    LifecycleOwner mLifecycleOwner;
 
-    public MovieAdapter(List<Movie> movieList) {
+    public MovieAdapter(List<Movie> movieList, Context context, LifecycleOwner lifecycleOwner) {
         this.movieList = movieList;
+        mContext = context;
+        mLifecycleOwner = lifecycleOwner;
     }
 
     @NonNull
@@ -55,6 +64,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
                 Log.d(TAG, "onClick: 66666666666666");
                 AppViewModel appViewModel = new AppViewModel();
                 appViewModel.getMovieDetail(movieList.get(thisPosition).getId());
+                appViewModel.liveMovieDetails.observe(mLifecycleOwner, new Observer<List<String>>() {
+                    @Override
+                    public void onChanged(List<String> list) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+                        alertDialog.setTitle(movieList.get(thisPosition).getName())
+                                .setPositiveButton("ok", null)
+                                .setMessage( "Type: " + list.get(0) + "\n\n" +
+                                        "Year:" + list.get(1) + "\n\n"  +
+                                        "IMDb Rate: " + list.get(2));
+                        AlertDialog dialog = alertDialog.create();
+                        dialog.show();
+                    }
+                });
             }
         };
 

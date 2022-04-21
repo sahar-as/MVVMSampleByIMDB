@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -33,17 +32,15 @@ public class MainActivity extends AppCompatActivity {
         binding.setAppViewModel(appViewModel);
         binding.setLifecycleOwner(this);
 
-//        MovieAdapter adapter = new MovieAdapter(movieList);
-//        binding.rvMainActivityMovieList.setLayoutManager(new GridLayoutManager(this, 2));
-//        binding.rvMainActivityMovieList.setAdapter(adapter);
+        binding.progressBarMainActivity.setVisibility(View.GONE);
 
         try{
-            appViewModel.mutableLiveDataMovieList.observe(this, new Observer<List<Movie>>() {
+            appViewModel.liveMovieList.observe(this, new Observer<List<Movie>>() {
                 @Override
                 public void onChanged(List<Movie> movies) {
                     Log.d(TAG, "onChanged: 22222222");
                     movieList = new ArrayList<>(movies);
-                    MovieAdapter adapter = new MovieAdapter(movieList);
+                    MovieAdapter adapter = new MovieAdapter(movieList, MainActivity.this,MainActivity.this);
                     binding.rvMainActivityMovieList.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
                     binding.rvMainActivityMovieList.setAdapter(adapter);
                 }
@@ -51,6 +48,17 @@ public class MainActivity extends AppCompatActivity {
         }catch (NullPointerException e){
             Log.d(TAG, "onCreate: 333333333333333");
         }
+
+        appViewModel.liveProgressBar.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    binding.progressBarMainActivity.setVisibility(View.VISIBLE);
+                }else{
+                    binding.progressBarMainActivity.setVisibility(View.GONE);
+                }
+            }
+        });
 
 
 

@@ -21,10 +21,14 @@ public class AppViewModel extends ViewModel {
     private static final String TAG = "AppViewModel";
 
     public ObservableField<String> cityName =  new ObservableField<>("");
-    public MutableLiveData<List<Movie>> mutableLiveDataMovieList = new MutableLiveData<>();
+    public MutableLiveData<List<Movie>> liveMovieList = new MutableLiveData<>();
+    public MutableLiveData<List<String>> liveMovieDetails = new MutableLiveData<>();
+    public MutableLiveData<Boolean> liveProgressBar = new MutableLiveData<>();
+
 
     GetMovieInfo mGetMovieInfo = new GetMovieInfo();
     public void getMovies(){
+        liveProgressBar.setValue(true);
         mGetMovieInfo.getMovieName(cityName.get(), new GetMovieInfo.ResultListener() {
             @Override
             public void nameResult(JsonArray jsonArray) {
@@ -37,7 +41,8 @@ public class AppViewModel extends ViewModel {
                             ,oneMovie.get("title").getAsString(), imageUrl);
                     movieList.add(movie);
                 }
-                mutableLiveDataMovieList.setValue(movieList);
+                liveMovieList.setValue(movieList);
+                liveProgressBar.setValue(false);
             }
             @Override
             public void detailResult(JsonObject jsonObject) {
@@ -55,9 +60,15 @@ public class AppViewModel extends ViewModel {
 
             @Override
             public void detailResult(JsonObject jsonObject) {
+                List<String> movieDetails = new ArrayList<>();
                 String type = jsonObject.get("type").getAsString();
+                movieDetails.add(type);
                 String year= jsonObject.get("year").getAsString();
+                movieDetails.add(year);
                 String imdb = jsonObject.get("imDb").getAsString();
+                movieDetails.add(imdb);
+                liveMovieDetails.setValue(movieDetails);
+
                 Log.d(TAG, "nameResult: 00000000000 " + type + "/" + year + "/" + imdb);
             }
         });
